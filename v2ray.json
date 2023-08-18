@@ -1,0 +1,247 @@
+{
+  "policy": {
+    "system": {
+      "statsOutboundUplink": true,
+      "statsOutboundDownlink": true
+    }
+  },
+  "log": {
+    "access": "",
+    "error": "",
+    "loglevel": "warning"
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "routeOnly": false
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "allowTransparent": false
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "routeOnly": false
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "allowTransparent": false
+      }
+    },
+    {
+      "tag": "api",
+      "port": 49975,
+      "listen": "127.0.0.1",
+      "protocol": "dokodemo-door",
+      "settings": {
+        "udp": false,
+        "address": "127.0.0.1",
+        "allowTransparent": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "23.106.142.138",
+            "port": 7621,
+            "users": [
+              {
+                "id": "c651e678-694f-465b-8044-7b4726b417c0",
+                "alterId": 0,
+                "email": "t@t.tt",
+                "security": "auto"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp"
+      },
+      "mux": {
+        "enabled": false,
+        "concurrency": -1
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {}
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "http"
+        }
+      }
+    }
+  ],
+  "stats": {},
+  "api": {
+    "tag": "api",
+    "services": [
+      "StatsService"
+    ]
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "domainMatcher": "linear",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": [
+          "api"
+        ],
+        "outboundTag": "api",
+        "enabled": true
+      },
+      {
+        "id": "5406563653564191337",
+        "type": "field",
+        "outboundTag": "proxy",
+        "domain": [
+          "*.bing.com"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "5310362695882774316",
+        "type": "field",
+        "port": "0-65535",
+        "outboundTag": "proxy",
+        "domain": [
+          "*.microsoft.com"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "5489018029523872701",
+        "type": "field",
+        "outboundTag": "proxy",
+        "domain": [
+          "outlook.live.com"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "4689972607429656730",
+        "type": "field",
+        "outboundTag": "proxy",
+        "domain": [
+          "edge.microsoft.com"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "5240569485870841212",
+        "type": "field",
+        "outboundTag": "proxy",
+        "domain": [
+          "*.bing.cn"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "5141096392706285672",
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "domain:example-example.com",
+          "domain:example-example2.com"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "5104750687762296041",
+        "type": "field",
+        "outboundTag": "block",
+        "domain": [
+          "geosite:category-ads-all"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "5403096280515370334",
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "geosite:cn"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "4669722432059772681",
+        "type": "field",
+        "outboundTag": "direct",
+        "ip": [
+          "geoip:private",
+          "geoip:cn"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "4866651515007436353",
+        "type": "field",
+        "outboundTag": "block",
+        "domain": [
+          "mousegesturesapi.com",
+          "cf-se.com"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "5745662266761554912",
+        "type": "field",
+        "port": "0-65535",
+        "outboundTag": "proxy",
+        "enabled": true
+      },
+      {
+        "id": "5386292373360773269",
+        "type": "field",
+        "outboundTag": "proxy",
+        "domain": [
+          "github.com",
+          "githubassets.com",
+          "githubusercontent.com"
+        ],
+        "enabled": true
+      },
+      {
+        "id": "5640032265031633639",
+        "type": "field",
+        "port": "0-65535",
+        "outboundTag": "proxy",
+        "enabled": true
+      }
+    ]
+  }
+}
