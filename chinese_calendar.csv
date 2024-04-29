@@ -1,4 +1,4 @@
-date,weekday,is_workday,is_holiday,holiday_name
+﻿date,weekday,is_workday,is_holiday,holiday_name
 2004-01-01,周四,False,True,New Year's Day
 2004-01-02,周五,True,False,
 2004-01-03,周六,False,True,
